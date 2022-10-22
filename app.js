@@ -12,33 +12,29 @@ const client = new Client({
     authStrategy: new LocalAuth()
 });
 
-var qrScan = 'Wait'
+
+
+ var qrScan = 'Wait'
+ let something = (req,res,next)=>{
+    req.body.qr = qrScan
+    next()
+ }
 // app.use(express.static(publicPath))  
-app.use("/api/chatbots" ,chatbotRouter)
+app.use("/api/chatbots" ,something,chatbotRouter)
+
+
+
 client.on('qr', qr => {
     qrcode.generate(qr, {small: true});
-    console.log(qr)
-    return qrScan = qr
+    // console.log(qr)
+    qrScan= qr
 });
-
 client.on('ready', () => {
     console.log('Client is ready!');
 });
 
 client.on('message', async message => {
     const content = message.body
-	// if(content === 'ສະບາຍດີ') {
-	// 	const meme = await axios("https://meme-api.herokuapp.com/gimme")
-    //     .then(res =>res.data)
-    //     client.sendMessage(message.from, await MessageMedia.fromUrl(meme.url))
-    //     // client.sendMessage(message.from, 'hello world')
-	// }else if (content === 'pls joke') {
-    //     const joke = await axios("https://v2.jokeapi.dev/joke/Any?blacklistFlags=political")
-    //     .then(res=>res.data)
-    //     const jokeMsg = await client.sendMessage(message.from, joke.joke)
-    //     if (joke.delivery) setTimeout(function(){jokeMsg.reply(joke.delivery)},5000)
-            
-    // }
 
     switch (content) {
         case 'ສະບາຍດີ':
